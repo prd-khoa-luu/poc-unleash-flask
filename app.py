@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from UnleashClient import UnleashClient
 
 
@@ -17,9 +17,11 @@ app = Flask(__name__)
 def index():
     # NOTE: param `default_value` is deprecated! Use the fallback_function on the main is_enabled() method.
     if client.is_enabled("index-hello"):
-        return "Hello World!"
+        # return "Hello World!"
+        return render_template("index_hello.html")
     else:
-        return "Goodbye World!"
+        # return "Goodbye World!"
+        return render_template("index_goodbye.html")
 
 
 if __name__ == '__main__':
