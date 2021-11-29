@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- CREDIT: Minimalist Bible Web App by Ryan Holmquist - https://codepen.io/ryanholmquist/pen/mdRZEZj -->
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ greeting }}</title>
+	<style>
+		@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Work+Sans:wght@300;500;700&display=swap");
+		@std-trans : 0.2s ease;
+
+		:root {
+			--color-main: #3c3f3e;
+			--color-accent: #cfcfcf;
+			--color-contrast: #000;
+			--color-body: #e6e2df;
+			--color-bkgd: #f8f8f8;
+			--color-soft: #909090;
+		}
+
+		[data-theme="dark"] {
+			--color-main: #c6c7c7;
+			--color-accent: #2e343b;
+			--color-contrast: #fff;
+			--color-body: #0b0f14;
+			--color-bkgd: #1a1e24;
+			--color-soft: #7d7d7d;
+		}
+
+		ul {
+			display: none;
+			z-index: 10;
+			list-style-type: none;
+			margin-block-start: 0;
+			margin-block-end: 0;
+			padding-inline-start: 0;
+			position: fixed;
+			top: 0px;
+			bottom: 0px;
+			background-color: var(--color-bkgd);
+			text-align: center;
+			overflow-y: scroll;
+			width: 100%;
+			max-width: 740px;
+			padding: 20px 60px;
+			margin: 40px auto 0;
+		}
+
+		ul li.bookitem {
+			display: block;
+			font-family: "Lora";
+			font-weight: 600;
+			font-size: 20px;
+			position: relative;
+			border-bottom: 1px solid var(--color-accent);
+			cursor: pointer;
+			padding: 15px 0 5px;
+			color: var(--color-main);
+			transition: none;
+		}
+
+		ul li.bookitem:hover {
+			border-bottom: 1px solid var(--color-main);
+			color: var(--color-contrast);
+		}
+
+		ul li.chapteritem {
+			display: inline-block;
+			font-weight: 700;
+			position: relative;
+			width: 60px;
+			height: 45px;
+			margin: 2px;
+			padding-top: 15px;
+			border: 1px solid var(--color-accent);
+			cursor: pointer;
+			background: var(--color-bkgd);
+			transition: none;
+		}
+
+		ul li.chapteritem:hover {
+			background-color: var(--color-accent);
+		}
+
+		::-webkit-scrollbar {
+			width: 0px;
+		}
+
+		button.dismiss {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			border: none;
+			background: var(--color-main);
+			color: var(--color-bkgd);
+			font-size: 26px;
+			padding: 8px 0 6px;
+			cursor: pointer;
+			z-index: 20;
+			transition: background;
+		}
+
+		button.dismiss:hover {
+			background-color: var(--color-contrast);
+		}
+
+		menu {
+			width: 100%;
+			display: inline-block;
+			list-style-type: none;
+			margin-block-start: 0;
+			margin-block-end: 0;
+			padding-inline-start: 0;
+			margin-bottom: -18px;
+		}
+
+		menu .darkswitch {
+			display: block;
+			height: 9px;
+			position: relative;
+			width: 9px;
+			float: right;
+		}
+
+		menu .darkswitch .sun {
+			position: absolute;
+			left: -6px;
+			top: -6px;
+			font-size: 21px;
+			z-index: 1;
+			color: var(--color-soft);
+		}
+
+		menu .darkswitch input {
+			display: none;
+		}
+
+		menu .darkswitch .slider {
+			background: var(--color-soft);
+			bottom: 0;
+			cursor: pointer;
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: 0;
+			transition: none;
+			border-radius: 30px;
+			z-index: 2;
+		}
+
+		menu .darkswitch .slider:before {
+			top: -3px;
+			content: "";
+			height: 15px;
+			left: -20px;
+			position: absolute;
+			transition: none;
+			width: 15px;
+			border-radius: 30px;
+			background: var(--color-bkgd);
+			z-index: 3;
+		}
+
+		menu .darkswitch input:checked+.slider {
+			transform: scale(2.2);
+		}
+
+		menu .darkswitch input:checked+.slider:before {
+			transform: translateX(14px) scale(0.5);
+		}
+
+		.nextprev-btn {
+			background: transparent;
+			border: none;
+			position: fixed;
+			top: 122px;
+			color: var(--color-soft);
+			font-size: 24px;
+		}
+
+		.nextprev-btn#prevch {
+			left: 10px;
+		}
+
+		.nextprev-btn#nextch {
+			right: 10px;
+		}
+
+		body {
+			background-color: var(--color-body);
+			transition: none;
+		}
+
+		#container {
+			position: absolute;
+			width: 100%;
+		}
+
+		#container article {
+			padding: 60px;
+			max-width: 740px;
+			margin: 40px auto;
+			background-color: var(--color-bkgd);
+			font-size: 16px;
+			line-height: 32px;
+			color: var(--color-main);
+			font-family: "Work Sans", sans-serif;
+			font-weight: 300;
+			transition: none;
+		}
+
+		#container article .centerwrap {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#container article h1 {
+			font-family: "Lora";
+			font-size: 2.5em;
+			background-color: transparent;
+			padding: 0 0.7em;
+			line-height: 2em;
+			border-bottom: 1px solid var(--color-main);
+			cursor: pointer;
+			transition: none;
+		}
+
+		#container article h1:hover {
+			background-color: var(--color-accent);
+			color: var(--color-contrast);
+			border-bottom: 1px solid var(--color-contrast);
+		}
+
+		#container article h2 {
+			font-family: "Work Sans";
+			font-size: 1.5em;
+			font-weight: 700;
+			background-color: var(--color-main);
+			color: var(--color-bkgd);
+			padding: 0 18px;
+			line-height: 2em;
+			cursor: pointer;
+			transition: none;
+		}
+
+		#container article h2:hover {
+			background-color: var(--color-contrast);
+		}
+
+		#container article .verse {
+			top: -0.5em;
+			position: relative;
+			font-size: 0.6em;
+			font-family: "Work Sans";
+			font-weight: 500;
+			color: var(--color-soft);
+			line-height: 1;
+		}
+
+		#container article .verse:before {
+			content: " ";
+		}
+
+		#container article p {
+			margin-top: 1em;
+		}
+
+		#container article p b {
+			font-weight: inherit;
+		}
+
+		a[target="_blank"] {
+			display: block;
+			text-align: center;
+			color: var(--color-soft);
+			text-decoration: none;
+			font-size: 1em;
+			margin-top: 20px;
+		}
+
+		code {
+			background-color: #eee;
+			border-radius: 3px;
+			font-family: courier, monospace;
+			padding: 0 3px;
+		}
+
+		#flag {
+			color: #315399;
+		}
+
+		.python-code {
+			font-size: 0.8em;
+		}
+
+		@media (max-width: 900px) {
+			article {
+				padding: 30px !important;
+				margin: 20px auto !important;
+				font-size: 14px !important;
+				line-height: 28px !important;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<article>
+			<button class="dismiss">
+				<ion-icon name="close-outline"></ion-icon>
+			</button>
+			<menu>
+				<label class="darkswitch" for="checkbox">
+					<input type="checkbox" id="checkbox" />
+					<div class="slider"></div>
+					<ion-icon name="sunny" class="sun"></ion-icon>
+				</label>
+			</menu>
+			<nav class="centerwrap" id="booknav">
+				<h1>{{ greeting }}!</h1>
+				<ul id="bookselect"></ul>
+			</nav>
+			<nav class="centerwrap" id="chapternav">
+				<h2 id="chapter"></h2>
+				<ul id="chapterselect">
+				</ul>
+			</nav>
+			<p id="passage" style="color: #000;">
+				<strong>
+					This is a proof-of-concept web page to demonstrate how to use a Feature flag management service. In
+					short, we can change the webpage and the backend without redeploying.
+				</strong>
+				<br>
+				<br>
+				Visit the Unleash Admin UI here:
+				<a href="https://ol-unleash.herokuapp.com/projects/default">
+					https://ol-unleash.herokuapp.com/projects/default
+				</a>
+				<br>
+				Username: admin
+				<br>
+				Password: unleash4all
+				<br>
+				<br>
+				Navigate to Projects > Default and you can see a list of Feature flags (toggles).
+				<br>
+				Switch off the <code><span id="flag">index-hello</span></code> flag and the text below will say
+				<code>GOODBYE WORLD!</code>.
+				<br>
+				Switch it on to show <code>HELLO WORLD!</code> again.
+				<br>
+			<h2>{{ greeting }}!</h2>
+			<br>
+			In the backend, the variable changes dynamically based on the flag's value:
+			<br>
+			<code
+				class="python-code">greeting = "HELLO WORLD" if client.is_enabled("index-hello") else "GOODBYE WORLD"</code>
+			<br>
+			See the whole code base at
+			<a href="https://github.com/prd-khoa-luu/poc-unleash-flask">
+				https://github.com/prd-khoa-luu/poc-unleash-flask
+			</a>
+			<br>
+			<br>
+			<strong>NOTE:</strong>
+			With Unleash, it will take about 7.5 seconds on average for the feature flag to propagate to this PoC
+			webpage. This delay time can be configured.
+			</p>
+		</article>
+	</div>
+	<script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+</body>
+
+</html>

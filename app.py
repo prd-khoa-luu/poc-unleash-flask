@@ -16,13 +16,9 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     # NOTE: param `default_value` is deprecated! Use the fallback_function on the main is_enabled() method.
-    if client.is_enabled("index-hello"):
-        # return "Hello World!"
-        return render_template("index_hello.html")
-    else:
-        # return "Goodbye World!"
-        return render_template("index_goodbye.html")
+    greeting = "HELLO WORLD" if client.is_enabled("index-hello") else "GOODBYE WORLD"
 
+    return render_template("index.html", greeting=greeting)
 
 if __name__ == '__main__':
     try:
