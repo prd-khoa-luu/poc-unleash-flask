@@ -279,16 +279,31 @@
 			<ul id="chapterselect">
 			</ul>
 		  </nav>
-		  <p id="passage">
-			  This is a proof of concept web page to demonstrate how a Feature flag management service works.
-			  Visit the Unleash server here:
+		  <p id="passage" style="color: #000;">
+			  <strong>
+				This is a proof-of-concept web page to demonstrate how to use a Feature flag management service. In short, we can change the webpage (and the backend as well) without redeploying.
+			  </strong>
+			  <br>
+			  <br>
+			  Visit the Unleash Admin UI here:
 			  <a href="https://ol-unleash.herokuapp.com/projects/default">
 				https://ol-unleash.herokuapp.com/projects/default
 			  </a>
 			  <br>
-			  Switch off the <strong>index-hello</strong> flag and this page will show GOODBYE WORLD!.
+			  Username: admin
 			  <br>
-			  Switch it on to show HELLO WORLD! again.
+			  Password: unleash4all
+			  <br>
+			  <br>
+			  Navigate to <code>Projects > Default</code> and you can see a list of Feature toggles (flags).
+			  <br>
+			  Switch off the <strong>index-hello</strong> flag and this page will show <strong>GOODBYE WORLD!</strong>.
+			  <br>
+			  Switch it on to show <strong>HELLO WORLD!</strong> again.
+			  <br>
+			  <br>
+			  <strong>NOTE:</strong>
+			  It will take about 7.5 seconds on average for the feature flag to propagate to this PoC webpage. This delay time can be configured.
 		  </p>
 		</article>
 	</div>

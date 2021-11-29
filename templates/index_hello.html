@@ -53,7 +53,7 @@
 		cursor: pointer;
 		padding: 15px 0 5px;
 		color: var(--color-main);
-		transition: ;
+		transition: none;
 		}
 		ul li.bookitem:hover {
 		border-bottom: 1px solid var(--color-main);
@@ -70,7 +70,7 @@
 		border: 1px solid var(--color-accent);
 		cursor: pointer;
 		background: var(--color-bkgd);
-		transition: ;
+		transition: none;
 		}
 		ul li.chapteritem:hover {
 		background-color: var(--color-accent);
@@ -131,7 +131,7 @@
 		position: absolute;
 		right: 0;
 		top: 0;
-		transition: ;
+		transition: none;
 		border-radius: 30px;
 		z-index: 2;
 		}
@@ -141,7 +141,7 @@
 		height: 15px;
 		left: -20px;
 		position: absolute;
-		transition: ;
+		transition: none;
 		width: 15px;
 		border-radius: 30px;
 		background: var(--color-bkgd);
@@ -169,7 +169,7 @@
 		}
 		body {
 		background-color: var(--color-body);
-		transition: ;
+		transition: none;
 		}
 		#container {
 		position: absolute;
@@ -185,7 +185,7 @@
 		color: var(--color-main);
 		font-family: "Work Sans", sans-serif;
 		font-weight: 300;
-		transition: ;
+		transition: none;
 		}
 		#container article .centerwrap {
 		display: flex;
@@ -200,7 +200,7 @@
 		line-height: 2em;
 		border-bottom: 1px solid var(--color-main);
 		cursor: pointer;
-		transition: ;
+		transition: none;
 		}
 		#container article h1:hover {
 		background-color: var(--color-accent);
@@ -216,7 +216,7 @@
 		padding: 0 18px;
 		line-height: 2em;
 		cursor: pointer;
-		transition: ;
+		transition: none;
 		}
 		#container article h2:hover {
 		background-color: var(--color-contrast);
@@ -279,16 +279,25 @@
 			<ul id="chapterselect">
 			</ul>
 		  </nav>
-		  <p id="passage">
+		  <p id="passage" style="color: #000;">
 			  This is a proof of concept web page to demonstrate how a Feature flag management service works.
-			  Visit the Unleash server here:
+			  Visit the Unleash Admin UI here:
 			  <a href="https://ol-unleash.herokuapp.com/projects/default">
 				https://ol-unleash.herokuapp.com/projects/default
 			  </a>
 			  <br>
+			  Username: admin
+			  <br>
+			  Password: unleash4all
+			  <br>
+			  Navigate to <code>Projects > Default</code> and you can see a list of Feature toggles (flags).
+			  <br>
 			  Switch off the <strong>index-hello</strong> flag and this page will show GOODBYE WORLD!.
 			  <br>
 			  Switch it on to show HELLO WORLD! again.
+			  <br>
+			  <span style="color: #F00;">NOTE:</span>
+			  It will take about 7.5 seconds on average for the feature flag to propagate to this PoC webpage.
 		  </p>
 		</article>
 	</div>
